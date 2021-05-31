@@ -8,10 +8,10 @@ _start:
 	mov rax, 7
 	call _printRAXDigit
 
-	mov rax, 6
-	mov rbx, 2
-	div rbx
-	call _printRAXDigit
+;	mov rax, 6
+;	mov rbx, 2
+;	div rbx
+;	call _printRAXDigit
 	
 	mov rax, 1
 	add rax, 4
@@ -35,7 +35,7 @@ _start:
 	syscall
 
 _printRAXDigit:
-	mov rax, 48
+	add rax, 48
 	mov [digit], al
 
 	mov rax, 1
