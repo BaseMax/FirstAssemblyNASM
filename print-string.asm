@@ -8,6 +8,7 @@ section .text
 _start:
     mov rax, text
     call _print
+
     mov rax, text2
     call _print
  
@@ -20,7 +21,6 @@ _start:
 _print:
     push rax
     mov rbx, 0
-
 _printLoop:
     inc rax
     inc rbx
