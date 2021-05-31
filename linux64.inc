@@ -1,5 +1,10 @@
+section .bss
+    digitSpace resb 100
+    digitSpacePos resb 8
+    printSpace resb 8
 %macro print 1
     mov rax, %1
+    mov [printSpace], rax
     mov rbx, 0
 %%printLoop:
     mov cl, [rax]
@@ -11,9 +16,52 @@
 %%endPrintLoop:
     mov rax, SYS_WRITE
     mov rdi, STDIN
-    mov rsi, %1
+    mov rsi, [printSpace]
     mov rdx, rbx
     syscall
+%endmacro
+ 
+%macro printVal 1
+    mov rax, %1
+%%printRAX:
+    mov rcx, digitSpace
+;   mov rbx, 10
+;   mov [rcx], rbx
+;   inc rcx
+    mov [digitSpacePos], rcx
+ 
+%%printRAXLoop:
+    mov rdx, 0
+    mov rbx, 10
+    div rbx
+    push rax
+    add rdx, 48
+ 
+    mov rcx, [digitSpacePos]
+    mov [rcx], dl
+    inc rcx
+    mov [digitSpacePos], rcx
+    
+    pop rax
+    cmp rax, 0
+    jne %%printRAXLoop
+ 
+%%printRAXLoop2:
+    mov rcx, [digitSpacePos]
+ 
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, rcx
+    mov rdx, 1
+    syscall
+ 
+    mov rcx, [digitSpacePos]
+    dec rcx
+    mov [digitSpacePos], rcx
+ 
+    cmp rcx, digitSpace
+    jge %%printRAXLoop2
+ 
 %endmacro
  
 %macro exit 0
@@ -382,4 +430,3 @@ MLOCK2  equ 325
 COPY_FILE_RANGE equ 326
 PREADV2 equ 327
 PWRITEV2    equ 328
-
